@@ -1,0 +1,158 @@
+exports = if module? then this else this.@kanad
+
+exports.syllables = (word) ->
+  word.=toLowerCase!
+  syllables = []
+  while word.length > 0
+    [syllable] = word.match syllablePattern
+    word.=slice syllable.length
+    syllables.push syllable
+  syllables
+
+exports.kanafySyllables = (syllables, syllabary=\hiragana) ->
+  syllabary = syllabaries[syllabary]
+  for syllable of syllables
+    if syllable.0 not of <[ x l ]> and syllable.1 == 'y'
+      syllabary[syllable.0 + \i]  + syllabary[\x + syllable.slice 1]
+    else
+      syllabary[syllable]
+
+exports.kanafyWord = (word, syllabary=\hiragana) ->
+  exports.kanafySyllables exports.syllables word, syllabary .join ''
+
+syllabaries =
+  hiragana:
+    a: \\u3042
+    i: \\u3044
+    u: \\u3046
+    e: \\u3048
+    o: \\u304A
+
+    ka: \\u304B
+    ki: \\u304D
+    ku: \\u304F
+    ke: \\u3051
+    ko: \\u3053
+
+    ga: \\u304C
+    gi: \\u304E
+    gu: \\u3050
+    ge: \\u3052
+    go: \\u3054
+
+    sa: \\u3055
+    si: \\u3057
+    shi: \\u3057
+    su: \\u3059
+    se: \\u305B
+    so: \\u305D
+
+    za: \\u3056
+    ji: \\u3058
+    zu: \\u305A
+    ze: \\u305C
+    zo: \\u305E
+
+    ta: \\u305F
+    ti: \\u3061
+    chi: \\u3061
+    tu: \\u3064
+    tsu: \\u3064
+    te: \\u3066
+    to: \\u3068
+
+    da: \\u3060
+    di: \\u3062
+    du: \\u3065
+    de: \\u3067
+    do: \\u3069
+
+    na: \\u306A
+    ni: \\u306B
+    nu: \\u306C
+    ne: \\u306D
+    no: \\u306E
+
+    ha: \\u306F
+    hi: \\u3072
+    hu: \\u3075
+    he: \\u3078
+    ho: \\u307B
+
+    ba: \\u3070
+    bi: \\u3073
+    bu: \\u3076
+    be: \\u3079
+    bo: \\u307C
+
+    pa: \\u3071
+    pi: \\u3074
+    pu: \\u3077
+    pe: \\u307A
+    po: \\u307D
+
+    ma: \\u307E
+    mi: \\u307F
+    mu: \\u3080
+    me: \\u3081
+    mo: \\u3082
+
+    ya: \\u3084
+    yu: \\u3086
+    yo: \\u3088
+
+    ra: \\u3089
+    ri: \\u308A
+    ru: \\u308B
+    re: \\u308C
+    ro: \\u308D
+
+    wa: \\u308F
+    wo: \\u3092
+
+    n: \\u3093
+    nn: \\u3093
+
+    xa: \\u3041
+    la: \\u3041
+    xi: \\u3043
+    li: \\u3043
+    xu: \\u3045
+    lu: \\u3045
+    xe: \\u3047
+    le: \\u3047
+    xo: \\u3049
+    lo: \\u3049
+
+    xtu: \\u3063
+    ltu: \\u3063
+
+    xya: \\u3083
+    lya: \\u3083
+    xyu: \\u3085
+    lyu: \\u3085
+    xyo: \\u3087
+    lyo: \\u3087
+
+    k: \\u3063
+    g: \\u3063
+    s: \\u3063
+    z: \\u3063
+    t: \\u3063
+    d: \\u3063
+    h: \\u3063
+    b: \\u3063
+    p: \\u3063
+    m: \\u3063
+    r: \\u3063
+
+    \- : \\u30FC
+
+syllablePattern = //
+  ^ [aiueo]                                            # A string starting with a lone vowel
+  | [kgsztdnhbpmr][aiueo]|y[auo]|w[ao]|nn?(?![aiueo])  # Or a simple syllable
+  | shi|chi|tsu                                        # Or shi, chi, or tsu
+  | ([kgsztdnhbpmr])(?=\1[aiueo])                      # Or a sokuon
+  | [kgsjdnhbpmr]y[auo]                                # Or a youon
+  | -                                                  # Or a chouonpu
+  //

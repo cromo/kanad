@@ -1,0 +1,44 @@
+vows = require \vows
+assert = require \assert
+kanad = require \../source/kanad
+
+vows.describe 'Converting a word to kana' .addBatch do
+  'when converting a romaji word to syllables':
+    'that doesn\'t have sokuon, chouonpu, or youon':
+      topic: -> kanad.syllables \oniisan
+      'all vowels not preceded by consonants are counted as individual syllables': !->
+        assert.equal it.0, \o
+        assert.equal it.2, \i
+      'consonants followed by vowels are grouped into a syllable': !->
+        assert.equal it.1, \ni
+        assert.equal it.3, \sa
+      'lone n\'s are counted as a syllable': !->
+        assert.equal it.4, \n
+
+    'that has sokuon':
+      topic: -> kanad.syllables \matte
+      'the sokuon will be denoted by a single consonant': !->
+        assert.equal it.1, \t
+    
+    'that has a written chouonpu':
+      topic: -> kanad.syllables \aisukuri-mu
+      'the chouonpu will be denoted by a "-"': !->
+        assert.equal it.5, \-
+    
+    'that has youon':
+      topic: -> kanad.syllables \ryuukyuu
+      'the characters making up the youon will be grouped together': !->
+        assert.equal it.0, \ryu
+        assert.equal it.2, \kyu
+    
+    'that has double n\'s':
+      'without a trailing vowel':
+        topic: -> kanad.syllables \monn
+        'will be recognized as a single syllable': !->
+          assert.equal it.1, \nn
+      'with a trailing vowel':
+        topic: -> kanad.syllables \minna
+        'will be split into an n and the following syllable': !->
+          assert.equal it.1, \n
+          assert.equal it.2, \na
+.run!
