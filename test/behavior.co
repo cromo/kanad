@@ -2,6 +2,11 @@ vows = require \vows
 assert = require \assert
 kanad = require \../source/kanad
 
+fullWidthSpace = \\u3000
+hiragana =
+  ha: \\u306F
+  wa: \\u308F
+
 vows.describe 'Converting a word to kana' .addBatch do
   'when converting a romaji word to syllables':
     'that doesn\'t have sokuon, chouonpu, or youon':
@@ -16,9 +21,19 @@ vows.describe 'Converting a word to kana' .addBatch do
         assert.equal it.4, \n
 
     'that has sokuon':
-      topic: -> kanad.syllablesOfWord \matte
-      'the sokuon will be denoted by a single consonant': !->
-        assert.equal it.1, \t
+      'before a two character syllable':
+        topic: -> kanad.syllablesOfWord \matte
+        'will be denoted by a single consonant': !->
+          assert.equal it.1, \t
+      'before a three character syllable':
+        'such as "chi"':
+          topic: -> kanad.syllablesOfWord \gocchisousama
+          'will be denoted by a single consonant': !->
+            assert.equal it.1, \c
+        'such as "shi"':
+          topic: -> kanad.syllablesOfWord \zasshi
+          'will be denoted by a single consonant': !->
+            assert.equal it.1, \s
     
     'that has a written chouonpu':
       topic: -> kanad.syllablesOfWord \aisukuri-mu
@@ -41,4 +56,23 @@ vows.describe 'Converting a word to kana' .addBatch do
         'will be split into an n and the following syllable': !->
           assert.equal it.1, \n
           assert.equal it.2, \na
+
+  'when converting a romaji sentence to kana':
+    topic: -> (options) -> kanad.kanafy 'kotae wa itsumo watashi no mune ni', options
+    'without passing any options':
+      topic: (kanafy) -> kanafy!
+      'should not preserve spaces': !->
+        assert.equal it.3, hiragana.wa
+      'should not attempt to correct common particles': !->
+        assert.equal it.3, hiragana.wa
+
+    'passing an option to preserve spaces':
+      topic: (kanafy) -> kanafy preserveSpaces: true
+      'should convert half-width spaces to full-width spaces': !->
+        assert.equal it.3, fullWidthSpace
+
+    'passing an option to correct common particles':
+      topic: (kanafy) -> kanafy correctParticles: true
+      'should correct a lone "wa" to "ha"': !->
+        assert.equal it.3, hiragana.ha
 .run!

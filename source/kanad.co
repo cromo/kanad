@@ -20,6 +20,9 @@ exports.kanafySyllables = (syllables, syllabary=\hiragana) ->
 exports.kanafyWord = (word, syllabary=\hiragana) ->
   exports.kanafySyllables exports.syllablesOfWord(word), syllabary .join ''
 
+exports.kanafy = (romaji, options) ->
+  romaji
+
 syllabaries =
   hiragana:
     a: \\u3042
