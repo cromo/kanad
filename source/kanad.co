@@ -1,6 +1,6 @@
 exports = if module? then this else this.@kanad
 
-exports.syllables = (word) ->
+exports.syllablesOfWord = (word) ->
   word.=toLowerCase!
   syllables = []
   while word.length > 0
@@ -18,7 +18,7 @@ exports.kanafySyllables = (syllables, syllabary=\hiragana) ->
       syllabary[syllable]
 
 exports.kanafyWord = (word, syllabary=\hiragana) ->
-  exports.kanafySyllables exports.syllables word, syllabary .join ''
+  exports.kanafySyllables exports.syllablesOfWord(word), syllabary .join ''
 
 syllabaries =
   hiragana:
@@ -145,6 +145,133 @@ syllabaries =
     p: \\u3063
     m: \\u3063
     r: \\u3063
+
+    \- : \\u30FC
+
+  katakana:
+    a: \\u30A2
+    i: \\u30A4
+    u: \\u30A6
+    e: \\u30A8
+    o: \\u30AA
+
+    ka: \\u30AB
+    ki: \\u30AD
+    ku: \\u30AF
+    ke: \\u30B1
+    ko: \\u30B3
+
+    ga: \\u30AC
+    gi: \\u30AE
+    gu: \\u30B0
+    ge: \\u30B2
+    go: \\u30B4
+
+    sa: \\u30B5
+    si: \\u30B7
+    shi: \\u30B7
+    su: \\u30B9
+    se: \\u30BB
+    so: \\u30BD
+
+    za: \\u30B6
+    ji: \\u30B8
+    zu: \\u30BA
+    ze: \\u30BC
+    zo: \\u30BE
+
+    ta: \\u30BF
+    ti: \\u30C1
+    chi: \\u30C1
+    tu: \\u30C4
+    tsu: \\u30C4
+    te: \\u30C6
+    to: \\u30C8
+
+    da: \\u30C0
+    di: \\u30C2
+    du: \\u30C5
+    de: \\u30C7
+    do: \\u30C9
+
+    na: \\u30CA
+    ni: \\u30CB
+    nu: \\u30CC
+    ne: \\u30CD
+    no: \\u30CE
+
+    ha: \\u30CF
+    hi: \\u30D2
+    hu: \\u30D5
+    he: \\u30D8
+    ho: \\u30DB
+
+    ba: \\u30D0
+    bi: \\u30D3
+    bu: \\u30D6
+    be: \\u30D9
+    bo: \\u30DC
+
+    pa: \\u30D1
+    pi: \\u30D4
+    pu: \\u30D7
+    pe: \\u30DA
+    po: \\u30DD
+
+    ma: \\u30DE
+    mi: \\u30DF
+    mu: \\u30E0
+    me: \\u30E1
+    mo: \\u30E2
+
+    ya: \\u30E4
+    yu: \\u30E6
+    yo: \\u30E8
+
+    ra: \\u30E9
+    ri: \\u30EA
+    ru: \\u30EB
+    re: \\u30EC
+    ro: \\u30ED
+
+    wa: \\u30EF
+    wo: \\u30F2
+
+    n: \\u30F3
+    nn: \\u30F3
+
+    xa: \\u30A1
+    la: \\u30A1
+    xi: \\u30A3
+    li: \\u30A3
+    xu: \\u30A5
+    lu: \\u30A5
+    xe: \\u30A7
+    le: \\u30A7
+    xo: \\u30A9
+    lo: \\u30A9
+
+    xtu: \\u30C3
+    ltu: \\u30C3
+
+    xya: \\u30E3
+    lya: \\u30E3
+    xyu: \\u30E5
+    lyu: \\u30E5
+    xyo: \\u30E7
+    lyo: \\u30E7
+
+    k: \\u30C3
+    g: \\u30C3
+    s: \\u30C3
+    z: \\u30C3
+    t: \\u30C3
+    d: \\u30C3
+    h: \\u30C3
+    b: \\u30C3
+    p: \\u30C3
+    m: \\u30C3
+    r: \\u30C3
 
     \- : \\u30FC
 
