@@ -2,9 +2,6 @@ vows = require \vows
 assert = require \assert
 kanad = require \../source/kanad
 
-console.log kanad.kanafyWord \aisukuri-mu \katakana
-console.log kanad.kanafyWord \yuubinnkyoku
-
 vows.describe 'Converting a word to kana' .addBatch do
   'when converting a romaji word to syllables':
     'that doesn\'t have sokuon, chouonpu, or youon':
